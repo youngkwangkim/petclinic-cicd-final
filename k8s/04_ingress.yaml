@@ -6,11 +6,17 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: instance
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    # 확인하신 ACM 인증서 ARN 반영
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:450444046629:certificate/65cc30e3-b5b9-435b-97dc-ca434d18c0d7
+    # HTTP 접속 시 HTTPS로 자동 리다이렉트
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
 spec:
   ingressClassName: alb
   rules:
-    - http:
+    # user07 사용자 도메인 변경
+    - host: user07.ttabaelean.site
+      http:
         paths:
           - path: /
             pathType: Prefix
